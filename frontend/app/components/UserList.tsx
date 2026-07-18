@@ -6,10 +6,11 @@ export async function UserList() {
     const data = await response.json();
 
     return (
+        // show id and category = example is: 1 (Food)
         <ul>
-            {data.users.map((user: { id: number; name: string; email: string }) => (
-                <li key={user.id}>
-                    {user.name} ({user.email})
+            {data.categories.map((category: { id: number; name: string; }) => (
+                <li key={category.id}>
+                    {category.id} ({category.name})
                 </li>
             ))}
         </ul>

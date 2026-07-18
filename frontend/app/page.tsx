@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div>
       <h1>
-        Express JS + Next JS Template
+        asdklfsdkjfhsdfkl
       </h1>
       <br />
       <UserList/>
