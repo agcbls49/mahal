@@ -1,7 +1,7 @@
 // import database config and user table from schema folder
 import { db } from "./db";
 import { categories, transactions } from "./drizzle/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 // import express data types and cors
 import express, { Request, Response } from "express";
@@ -94,7 +94,59 @@ async function main() {
         }
     });
 
+    // POST CREATE a category
+    app.post("/categories", async (req, res) => {
+        const { categoryName }:{ categoryName?:any } = req.body;
+
+        if(!categoryName) {
+            res.status(404).json({ message: "Category name is required" });
+        }
+
+        try {
+            const result = await db.insert(categories).values({ name: categoryName });
+
+            res.status(201).json(result);
+        }
+        catch(e: any) {
+            console.error(e);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    });
+
+    // POST a transaction
+    app.post("/transactions", async (req, res) => {
+        const { amount, description, eventDate, categoryId }:{ amount?:number, description?:string, eventDate?:string, categoryId?:number } = req.body;
+
+        if (amount === undefined || !description || !eventDate || categoryId === undefined) {
+            return res.status(400).json({ message: "All transaction fields are required" });
+        }
+
+        // parse the event date and ensure its the proper Postgres data format which is yyyy:mm:dd
+        const parsedEventDate = new Date(eventDate);
+        if (Number.isNaN(parsedEventDate.getTime())) {
+            return res.status(400).json({ message: "Invalid date format" });
+        }
+
+        try {
+            const result = await db.insert(transactions).values({
+                amount,
+                description,
+                eventDate: parsedEventDate,
+                categoryId
+            });
+
+            res.status(201).json(result);
+        }
+        catch(e: any) {
+            console.error(e);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    });
+
+    // UPDATE a category name
     
+
+
 
 
     const port = process.env.PORT || 4000;
