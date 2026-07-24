@@ -144,8 +144,57 @@ async function main() {
     });
 
     // UPDATE a category name
-    
+    app.put("/categories/:id", async(req, res) => {
+        const categoryId = Number(req.params.id);
+        const { categoryName } = req.body;
 
+        if(!categoryId) {
+            return res.status(404).json({ message: "Category name is required" });
+        }
+
+        try {
+            const result = await db.update(categories).set({ name: categoryName }).where(eq(categories.id, categoryId));
+
+            res.status(201).json(result);
+        }
+        catch(e: any) {
+            console.error(e);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    });
+
+    // UPDATE a transaction
+    app.put("/transactions/:id", async(req, res) => {
+        const transactionId = Number(req.params.id);
+        const { amount, description, eventDate, categoryId }:{ amount?:number, description?:string, eventDate?:string, categoryId?:number } = req.body;
+
+        if (amount === undefined || !description || !eventDate || categoryId === undefined) {
+            return res.status(400).json({ message: "All transaction fields are required" });
+        }
+
+        // parse the event date and ensure its the proper Postgres data format which is yyyy:mm:dd
+        const parsedEventDate = new Date(eventDate);
+        if (Number.isNaN(parsedEventDate.getTime())) {
+            return res.status(400).json({ message: "Invalid date format" });
+        }
+
+        try {
+            const result = await db.update(transactions).set({
+                amount,
+                description,
+                eventDate: parsedEventDate,
+                categoryId
+            }).where(eq(transactions.id, transactionId));
+
+            res.status(201).json(result);
+        }
+        catch(e: any) {
+            console.error(e);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    });
+
+    // DELETE a category name
 
 
 
