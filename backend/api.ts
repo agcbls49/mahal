@@ -1,7 +1,7 @@
 // import database config and user table from schema folder
 import { db } from "./db";
 import { categories, transactions } from "./drizzle/schema";
-import { desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 // import express data types and cors
 import express, { Request, Response } from "express";
@@ -18,10 +18,10 @@ async function main() {
     app.get("/categories", async (req: Request, res: Response): Promise<void> => {
         try {
             const data = await db.select().from(categories);
-            res.json({ categories: data });
+            res.status(200).json({ categories: data });
         } catch (e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
@@ -29,15 +29,15 @@ async function main() {
     app.get("/transactions", async (req: Request, res: Response): Promise<void> => {
         try {
             const rows = await db.select().from(transactions);
-            res.json(rows);
+            res.status(200).json(rows);
         } catch (e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
     // GET a SINGLE CATEGORY entry by id
-    app.get("/categories/:id", async (req, res) => {
+    app.get("/categories/:id", async (req: Request, res: Response) => {
         const id = Number(req.params.id);
 
         try {
@@ -49,10 +49,10 @@ async function main() {
                 return res.status(404).json({ message: "Category not found" });
             }
 
-            return res.json(category);
+            return res.status(200).json(category);
         } catch (e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
@@ -67,15 +67,15 @@ async function main() {
                 return res.status(404).json({ message: "Transaction not found" });
             }
 
-            return res.json(transactionsData);
+            return res.status(200).json(transactionsData);
         } catch (e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
     // GET a SINGLE TRANSACTION entry by id
-    app.get("/transactions/:id", async (req, res) => {
+    app.get("/transactions/:id", async (req: Request, res: Response) => {
         const id = Number(req.params.id);
 
         try {
@@ -87,15 +87,15 @@ async function main() {
                 return res.status(404).json({ message: "Transaction not found" });
             }
 
-            return res.json(transaction);
+            return res.status(200).json(transaction);
         } catch (e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
     // POST CREATE a category
-    app.post("/categories", async (req, res) => {
+    app.post("/categories", async (req: Request, res: Response) => {
         const { categoryName }:{ categoryName?:any } = req.body;
 
         if(!categoryName) {
@@ -109,12 +109,12 @@ async function main() {
         }
         catch(e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
-    // POST a transaction
-    app.post("/transactions", async (req, res) => {
+    // POST CREATE a transaction
+    app.post("/transactions", async (req: Request, res: Response) => {
         const { amount, description, eventDate, categoryId }:{ amount?:number, description?:string, eventDate?:string, categoryId?:number } = req.body;
 
         if (amount === undefined || !description || !eventDate || categoryId === undefined) {
@@ -139,12 +139,12 @@ async function main() {
         }
         catch(e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
     // UPDATE a category name
-    app.put("/categories/:id", async(req, res) => {
+    app.put("/categories/:id", async(req: Request, res: Response) => {
         const categoryId = Number(req.params.id);
         const { categoryName } = req.body;
 
@@ -159,12 +159,12 @@ async function main() {
         }
         catch(e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
     // UPDATE a transaction
-    app.put("/transactions/:id", async(req, res) => {
+    app.put("/transactions/:id", async(req: Request, res: Response) => {
         const transactionId = Number(req.params.id);
         const { amount, description, eventDate, categoryId }:{ amount?:number, description?:string, eventDate?:string, categoryId?:number } = req.body;
 
@@ -190,12 +190,39 @@ async function main() {
         }
         catch(e: any) {
             console.error(e);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error: "Internal server error" });
         }
     });
 
     // DELETE a category name
+    app.delete("/categories/:id", async(req: Request, res: Response) => {
+        const categoryId = Number(req.params.id);
 
+        try {
+            await db.delete(categories).where(eq(categories.id, categoryId));
+
+            res.status(200).json({ message: "Category name deleted successfully!" });
+        }
+        catch(e:any) {
+            console.error(e);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+    // DELETE a transaction
+    app.delete("/transactions/:id", async(req: Request, res: Response) => {
+        const transactionId = Number(req.params.id);
+
+        try {
+            await db.delete(transactions).where(eq(transactions.id, transactionId));
+
+            res.status(200).json({ message: "Transaction deleted successfully!" });
+        }
+        catch(e:any) {
+            console.error(e);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
 
 
     const port = process.env.PORT || 4000;
