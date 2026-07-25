@@ -1,12 +1,11 @@
-import { UserList } from "./components/Main";
+import { TransactionsView } from "./components/TransactionsView";
 
 export default function Home() {
   return (
-    <div>
-      <h1>
-      </h1>
-      <br />
-      <UserList/>
+    <div className="caret-teal-500 selection:bg-teal-500 selection:text-white">
+      <div className="min-h-screen items-center justify-center p-4">
+        <TransactionsView/>
+      </div>
     </div>
   );
 }

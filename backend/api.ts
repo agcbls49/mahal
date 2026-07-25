@@ -17,7 +17,7 @@ async function main() {
     // GET ALL CATEGORIES (id and category) from the table
     app.get("/categories", async (req: Request, res: Response): Promise<void> => {
         try {
-            const data = await db.select().from(categories);
+            const data = await db.select().from(categories).orderBy(asc(categories.name));
             res.status(200).json({ categories: data });
         } catch (e: any) {
             console.error(e);
