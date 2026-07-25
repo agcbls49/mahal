@@ -1,10 +1,9 @@
-import { UserList } from "./components/UserList";
+import { UserList } from "./components/Main";
 
 export default function Home() {
   return (
     <div>
       <h1>
-        asdklfsdkjfhsdfkl
       </h1>
       <br />
       <UserList/>

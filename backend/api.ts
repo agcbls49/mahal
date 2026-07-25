@@ -1,7 +1,7 @@
 // import database config and user table from schema folder
 import { db } from "./db";
 import { categories, transactions } from "./drizzle/schema";
-import { eq } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 // import express data types and cors
 import express, { Request, Response } from "express";
@@ -28,7 +28,16 @@ async function main() {
     // GET ALL TRANSACTIONS
     app.get("/transactions", async (req: Request, res: Response): Promise<void> => {
         try {
-            const rows = await db.select().from(transactions);
+            const rows = await db.select({
+                id: transactions.id,
+                amount: transactions.amount,
+                description: transactions.description,
+                eventDate: transactions.eventDate,
+                categoryName: categories.name,
+            }).from(transactions)
+            .leftJoin(categories, eq(transactions.categoryId, categories.id))
+            .orderBy(asc(transactions.eventDate));
+
             res.status(200).json(rows);
         } catch (e: any) {
             console.error(e);
