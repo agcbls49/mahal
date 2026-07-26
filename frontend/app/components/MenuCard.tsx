@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+// this is needed so that the add transaction button can be inside the menu card
 interface MenuCardProps {
     children: ReactNode;
 }

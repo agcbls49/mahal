@@ -8,6 +8,7 @@ import { CategoriesView } from "./CategoriesView";
 import { AddTransaction } from "./AddTransaction";
 import { UpdateTransaction } from "./UpdateTransaction";
 import { DeleteTransaction } from "./DeleteTransaction";
+import { SearchTransaction } from "./SearchTransaction";
 
 export function TransactionsView() {
     const [data, setData] = useState<Transaction[]>([]);
@@ -26,7 +27,13 @@ export function TransactionsView() {
         <>
             {/* Added min-h-screen items-center justify-center p-4 to center both boxes */}
             <div className="flex min-h-screen items-center justify-center flex-col md:flex-row gap-10 p-4">
+                    {/* Menu Box */}
                     <div className="flex flex-col gap-4"> 
+                        <MenuCard>
+                        <SearchTransaction onSearchTransaction={setData}/>
+                        {/* Show the new transaction created */}
+                        <AddTransaction onTransactionAdded={loadTransactions}/>
+                    </MenuCard>
                     {/* Transactions Box */}
                     <div className="w-full max-w-3xl max-h-[80vh] overflow-y-auto bg-black rounded-2xl p-5 text-white">
                         {/* Column Headers */}
@@ -68,10 +75,6 @@ export function TransactionsView() {
                             ))}
                         </ul>
                     </div>
-                    <MenuCard>
-                        {/* Show the new transaction created */}
-                        <AddTransaction onTransactionAdded={loadTransactions}/>
-                    </MenuCard>
                 </div>
                 
                 {/* Category Box */}

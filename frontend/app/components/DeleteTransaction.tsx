@@ -25,7 +25,7 @@ export function DeleteTransaction({ transactionId, onDeleteTransactionSuccess}: 
         }
     };
     return(
-        <button className="w-10 h-10 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-300 ease-in-out cursor-pointer"
+        <button className="w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-800 text-white rounded-lg transition-all duration-300 ease-in-out cursor-pointer"
             onClick={handleDelete}>
             <Trash strokeWidth={3} className="w-5 h-5" />
         </button>

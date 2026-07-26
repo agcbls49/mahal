@@ -1,7 +1,7 @@
 // import database config and user table from schema folder
 import { db } from "./db";
 import { categories, transactions } from "./drizzle/schema";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, ilike, or } from "drizzle-orm";
 
 // import express data types and cors
 import express, { Request, Response } from "express";
@@ -83,23 +83,32 @@ async function main() {
         }
     });
 
-    // GET a SINGLE TRANSACTION entry by id
-    app.get("/transactions/:id", async (req: Request, res: Response) => {
-        const id = Number(req.params.id);
+    // GET transactions by description or category
+    app.get("/transactions/:search", async (req: Request, res: Response) => {
+        const search = req.params.search;
 
         try {
-            const transactionsData = await db.select().from(transactions);
+            const transactionsData = await db
+                .select({
+                    id: transactions.id,
+                    amount: transactions.amount,
+                    description: transactions.description,
+                    eventDate: transactions.eventDate,
+                    categoryName: categories.name,
+                })
+                .from(transactions)
+                .leftJoin(categories, eq(transactions.categoryId, categories.id))
+                .where(
+                    or(
+                        ilike(transactions.description, `%${search}%`),
+                        ilike(categories.name, `%${search}%`)
+                    )
+                );
 
-            const transaction = transactionsData.find(t => t.id === id);
-
-            if (!transaction) {
-                return res.status(404).json({ message: "Transaction not found" });
-            }
-
-            return res.status(200).json(transaction);
+            return res.status(200).json(transactionsData);
         } catch (e: any) {
             console.error(e);
-            res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" });
         }
     });
 

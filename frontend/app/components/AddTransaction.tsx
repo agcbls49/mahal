@@ -70,9 +70,9 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
                     await loadCategories();
                     setOpen(true);
                 }}
-                className="w-50 flex items-center justify-center gap-3 bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg transition-colors">
+                className="mt-4 w-35 flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg transition-colors">
                 <Plus strokeWidth={3} className="w-5 h-5" />
-                <span>Add a Transaction</span>
+                <span>Transaction</span>
             </button>
             
             {/* If button is clicked */}
