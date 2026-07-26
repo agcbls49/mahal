@@ -15,12 +15,18 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
 
     // function to call api and create the category
     async function handleSubmit() {
+        if (categoryName.trim() === "") {
+            alert("Category name is required.");
+            return;
+        }
+
         const response = await fetch("http://localhost:4000/categories", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ categoryName }),
+            // prevent creating empty category
+            body: JSON.stringify({ categoryName: categoryName.trim() }),
         });
 
         if (response.ok) {

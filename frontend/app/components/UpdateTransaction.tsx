@@ -1,17 +1,18 @@
 "use client";
+
 import { useState, useEffect } from "react";
-
+import { Pen } from "lucide-react";
 import { Category } from "../types/categories";
-import { Plus } from "lucide-react";
 
-interface AddTransactionProps {
-    onTransactionAdded: () => void;
+type EditTransactionProps = {
+    transactionId: number;
+    onEditComplete: () => void;
 }
 
-export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
-    // create transaction button 
+export function UpdateTransaction({ transactionId, onEditComplete}: EditTransactionProps) {
+    // edit transaction button 
     const [open, setOpen] = useState(false);
-    // create transaction input
+    // edit transaction input
     const [transactionAmount, setTransactionAmount] = useState("");
     const [transactionDescription, setTransactionDescription] = useState("");
     const [transactionEventDate, setTransactionEventDate] = useState("");
@@ -20,48 +21,48 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
     const [categories, setCategories] = useState<Category[]>([]);
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setTransactionEventDate(event.target.value); // Returns "YYYY-MM-DD"
-    };
-
-    async function loadCategories() {
-        const response = await fetch("http://localhost:4000/categories");
-        const data = await response.json();
-        setCategories(data.categories);
-    }
-        useEffect(() => {
-        loadCategories();
-    }, []);
-
-    // function to call api and create the transaction
-    async function handleSubmit() {
-        if (transactionAmount.trim() === "" || transactionDescription.trim() === "" || transactionEventDate.trim() === "" || transactionCategoryName.trim() === "") {
-            alert("All fields are required.");
-            return;
+            setTransactionEventDate(event.target.value); // Returns "YYYY-MM-DD"
+        };
+    
+        async function loadCategories() {
+            const response = await fetch("http://localhost:4000/categories");
+            const data = await response.json();
+            setCategories(data.categories);
         }
+            useEffect(() => {
+            loadCategories();
+        }, []);
+    
+        // function to call api and create the category
+        async function handleSubmit() {
+            if (transactionAmount.trim() === "" || transactionDescription.trim() === "" || transactionEventDate.trim() === "" || transactionCategoryName.trim() === "") {
+                alert("All fields are required.");
+                return;
+            }
+    
+            const response = await fetch(`http://localhost:4000/transactions/${transactionId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    amount: Number(transactionAmount),
+                    description: transactionDescription,
+                    eventDate: transactionEventDate,
+                    categoryId: Number(transactionCategoryName),
+                }),
+            });
 
-        const response = await fetch("http://localhost:4000/transactions", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                amount: Number(transactionAmount),
-                description: transactionDescription,
-                eventDate: transactionEventDate,
-                categoryId: Number(transactionCategoryName),
-            }),
-        });
-
-        if (response.ok) {
-            setTransactionAmount("");
-            setTransactionDescription("");
-            setTransactionEventDate("");
-            setTransactionCategoryName("");
-            setOpen(false);
-            onTransactionAdded();
+            if (response.ok) {
+                setTransactionAmount("");
+                setTransactionDescription("");
+                setTransactionEventDate("");
+                setTransactionCategoryName("");
+                setOpen(false);
+                onEditComplete();
+            }
         }
-    }
-
+    
     return(
         <>
             <button
@@ -70,16 +71,15 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
                     await loadCategories();
                     setOpen(true);
                 }}
-                className="w-50 flex items-center justify-center gap-3 bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg transition-colors">
-                <Plus strokeWidth={3} className="w-5 h-5" />
-                <span>Add a Transaction</span>
+                className="w-10 h-10 flex items-center justify-center gap-3 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg transition-colors">
+                <Pen strokeWidth={3} className="w-5 h-5" />
             </button>
             
             {/* If button is clicked */}
             {open && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-xs">
                     <div className="bg-black rounded-xl p-6 w-96">
-                        <h2 className="text-xl font-bold mb-4">Add Transaction</h2>
+                        <h2 className="text-xl font-bold mb-4">Edit Transaction</h2>
                         {/* Input field gets the value */}
                         <input
                             type="number"

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Category } from "../types/categories";
 import { AddCategory } from "./AddCategory";
+import { DeleteCategory } from "./DeleteCategory";
 
 export function CategoriesView() {
     const [data, setData] = useState<{ categories: Category[] }>({ categories: [] });
@@ -26,8 +27,15 @@ export function CategoriesView() {
             <ul className="space-y-2 text-lg">
                 {data.categories && data.categories.length > 0 ? (
                     data.categories.map((category: Category) => (
-                        <li key={category.id}>
+                        <li key={category.id}
+                            className="flex items-center justify-between">
                             <span>{category.name}</span>
+                            <span>
+                                <DeleteCategory
+                                    categoryId={category.id}
+                                    onDeleteCategorySuccess={loadCategories}
+                                />
+                            </span>
                         </li>
                     ))
                 ) : (

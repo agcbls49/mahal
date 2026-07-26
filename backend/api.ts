@@ -107,7 +107,8 @@ async function main() {
     app.post("/categories", async (req: Request, res: Response) => {
         const { categoryName }:{ categoryName?:any } = req.body;
 
-        if(!categoryName) {
+        // prevent adding empty category name
+        if(!categoryName || categoryName.trim() === "") {
             res.status(404).json({ message: "Category name is required" });
         }
 
