@@ -28,16 +28,16 @@ export function TransactionsView() {
             {/* Added min-h-screen items-center justify-center p-4 to center both boxes */}
             <div className="flex min-h-screen items-center justify-center flex-col md:flex-row gap-10 p-4">
                     {/* Menu Box */}
-                    <div className="flex flex-col gap-4"> 
+                    <div className="w-full max-w-3xl flex flex-col gap-4"> 
                         <MenuCard>
-                        <SearchTransaction onSearchTransaction={setData}/>
+                        <SearchTransaction onSearchTransaction={setData} onClearSearch={loadTransactions}/>
                         {/* Show the new transaction created */}
                         <AddTransaction onTransactionAdded={loadTransactions}/>
                     </MenuCard>
                     {/* Transactions Box */}
-                    <div className="w-full max-w-3xl max-h-[80vh] overflow-y-auto bg-black rounded-2xl p-5 text-white">
+                    <div className="w-full max-h-[80vh] overflow-y-auto bg-black rounded-2xl p-5 text-white">
                         {/* Column Headers */}
-                        <div className="grid grid-cols-5 gap-4 font-bold pb-2 mb-3 text-lg tracking-wider border-b border-teal-500">
+                        <div className="grid grid-cols-[120px_1fr_120px_120px_100px] gap-4 font-bold pb-2 mb-3 text-lg tracking-wider border-b border-indigo-500">
                             <span>Amount</span>
                             <span>Description</span>
                             <span>Date</span>
@@ -50,7 +50,7 @@ export function TransactionsView() {
                                 <li key={transaction.id}
                                     className="grid grid-cols-5 gap-4 items-center justify-between text-lg">
                                     <span>₱{transaction.amount.toLocaleString("en-PH")}</span>
-                                    <span className="truncate capitalize">{transaction.description}</span>
+                                    <span className="capitalize">{transaction.description}</span>
                                     <span>
                                         {new Date(transaction.eventDate).toLocaleDateString("en-PH", {
                                             year: "numeric",
@@ -63,7 +63,7 @@ export function TransactionsView() {
                                     <span className="flex items-center gap-2">
                                         {/* Update a transaction */}
                                         <UpdateTransaction 
-                                            transactionId = {transaction.id}
+                                            transaction = {transaction}
                                             onEditComplete={loadTransactions}/>
                                         {/* Delete a transaction */}
                                         <DeleteTransaction 

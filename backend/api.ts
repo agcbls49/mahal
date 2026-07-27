@@ -14,7 +14,7 @@ async function main() {
     app.use(cors({ origin: "http://localhost:3000" }));
     app.use(express.json());
 
-    // GET ALL CATEGORIES (id and category) from the table
+    // GET ALL CATEGORIES
     app.get("/categories", async (req: Request, res: Response): Promise<void> => {
         try {
             const data = await db.select().from(categories).orderBy(asc(categories.name));
@@ -33,6 +33,7 @@ async function main() {
                 amount: transactions.amount,
                 description: transactions.description,
                 eventDate: transactions.eventDate,
+                categoryId: transactions.categoryId,
                 categoryName: categories.name,
             }).from(transactions)
             .leftJoin(categories, eq(transactions.categoryId, categories.id))
@@ -65,26 +66,9 @@ async function main() {
         }
     });
 
-    // GET ALL TRANSACTIONS FOR ONE CATEGORY
-    app.get("/transactions/categories/:id", async (req: Request, res: Response) => {
-        const id = Number(req.params.id);
-
-        try {
-            const transactionsData = await db.select().from(transactions).where(eq(transactions.categoryId, id));
-
-            if (transactionsData.length === 0) {
-                return res.status(404).json({ message: "Transaction not found" });
-            }
-
-            return res.status(200).json(transactionsData);
-        } catch (e: any) {
-            console.error(e);
-            res.status(500).json({ error: "Internal server error" });
-        }
-    });
-
     // GET transactions by description or category
-    app.get("/transactions/:search", async (req: Request, res: Response) => {
+    // for search feature
+    app.get("/transactions/search/:search", async (req: Request, res: Response) => {
         const search = req.params.search;
 
         try {
@@ -246,7 +230,7 @@ async function main() {
 
     const port = process.env.PORT || 4000;
     app.listen(port, () => {
-        console.log(`Server running on http://localhost:${port}/categories`);
+        console.log(`Server running on http://localhost:${port}/transactions`);
     });
 }
 

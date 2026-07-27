@@ -21,7 +21,7 @@ export function CategoriesView() {
 
     return (
         <div className="w-full max-w-62.5 max-h-[80vh] overflow-y-auto bg-black rounded-2xl p-5 text-white">
-            <div className="font-bold pb-2 mb-3 text-lg tracking-wider border-b border-teal-500">
+            <div className="font-bold pb-2 mb-3 text-lg tracking-wider border-b border-indigo-500">
                 Categories
             </div>
             {/* Category Names */}
@@ -34,7 +34,7 @@ export function CategoriesView() {
                             <span className="flex items-center gap-2">
                                 {/* Update Category */}
                                 <UpdateCategory 
-                                    categoryId={category.id} 
+                                    category={category} 
                                     onEditComplete={loadCategories}
                                 />
                                 {/* Delete Category */}

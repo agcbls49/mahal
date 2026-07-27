@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { Pen } from "lucide-react";
 import { Category } from "../types/categories";
+import { Transaction } from "../types/transaction";
 
 type EditTransactionProps = {
-    transactionId: number;
+    transaction: Transaction;
     onEditComplete: () => void;
 }
 
-export function UpdateTransaction({ transactionId, onEditComplete}: EditTransactionProps) {
+export function UpdateTransaction({ transaction, onEditComplete}: EditTransactionProps) {
     // edit transaction button 
     const [open, setOpen] = useState(false);
     // edit transaction input
@@ -30,7 +31,7 @@ export function UpdateTransaction({ transactionId, onEditComplete}: EditTransact
             setCategories(data.categories);
         }
             useEffect(() => {
-            loadCategories();
+                loadCategories();
         }, []);
     
         // function to call api and create the category
@@ -40,7 +41,7 @@ export function UpdateTransaction({ transactionId, onEditComplete}: EditTransact
                 return;
             }
     
-            const response = await fetch(`http://localhost:4000/transactions/${transactionId}`, {
+            const response = await fetch(`http://localhost:4000/transactions/${transaction.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,9 +70,16 @@ export function UpdateTransaction({ transactionId, onEditComplete}: EditTransact
                 onClick={async () => {
                     // reload so that the newly added category shows up on the modal
                     await loadCategories();
+
+                    // this will show the previous content of the transaction that the user can edit
+                    setTransactionAmount(String(transaction.amount));
+                    setTransactionDescription(transaction.description);
+                    setTransactionEventDate(String(transaction.eventDate).split("T")[0]);
+                    setTransactionCategoryName(String(transaction.categoryId));
+
                     setOpen(true);
                 }}
-                className="w-10 h-10 flex items-center justify-center gap-3 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg transition-colors">
+                className="w-10 h-10 flex items-center justify-center gap-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-lg transition-colors">
                 <Pen strokeWidth={3} className="w-5 h-5" />
             </button>
             
@@ -116,7 +124,7 @@ export function UpdateTransaction({ transactionId, onEditComplete}: EditTransact
                         </select>
                         {/* Sets category it got from the input field */}
                         <div className="flex mt-3 space-x-5 justify-end">
-                            <button className="w-20 h-10 font-bold bg-teal-500 hover:bg-teal-600 rounded-lg text-white"
+                            <button className="w-20 h-10 font-bold bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white"
                                 onClick={handleSubmit}>
                                 Save
                             </button>

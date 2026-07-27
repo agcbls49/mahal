@@ -3,5 +3,6 @@ export interface Transaction {
     amount: number;
     description: string;
     eventDate: string;
+    categoryId: number;
     categoryName: string;
 }

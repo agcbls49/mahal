@@ -41,7 +41,7 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
             {/* Add category button */}
             <button
                 onClick={() => setOpen(true)}
-                className="mt-5 w-full flex items-center justify-center gap-3 bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-lg transition-colors">
+                className="mt-5 w-full flex items-center justify-center gap-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 rounded-lg transition-colors">
                 <Plus strokeWidth={3} className="w-5 h-5" />
                 <span>Add a Category</span>
             </button>
@@ -61,7 +61,7 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
                         />
                         {/* Sets category it got from the input field */}
                         <div className="flex mt-3 space-x-5 justify-end">
-                            <button className="w-20 h-10 font-bold bg-teal-500 hover:bg-teal-600 rounded-lg text-white"
+                            <button className="w-20 h-10 font-bold bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white"
                                 onClick={handleSubmit}>
                                 Save
                             </button>

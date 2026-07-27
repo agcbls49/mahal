@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Pen } from "lucide-react";
+import { Category } from "../types/categories";
 
 type EditCategoryProps = {
-    categoryId: number;
+    category: Category;
     onEditComplete: () => void;
 }
 
-export function UpdateCategory({ categoryId, onEditComplete }: EditCategoryProps) {
+export function UpdateCategory({ category, onEditComplete }: EditCategoryProps) {
     // edit category button 
     const [open, setOpen] = useState(false);
     // edit category input
@@ -21,7 +22,7 @@ export function UpdateCategory({ categoryId, onEditComplete }: EditCategoryProps
             return;
         }
 
-        const response = await fetch(`http://localhost:4000/categories/${categoryId}`, {
+        const response = await fetch(`http://localhost:4000/categories/${category.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -41,8 +42,11 @@ export function UpdateCategory({ categoryId, onEditComplete }: EditCategoryProps
         <>
             {/* Add category button */}
             <button
-                onClick={() => setOpen(true)}
-                className="w-10 h-10 flex items-center justify-center bg-teal-500 hover:bg-teal-600 text-white rounded-lg transition-all duration-300 ease-in-out cursor-pointer">
+                onClick={() => {
+                    setCategoryName(category.name);
+                    setOpen(true);
+                }}
+                className="w-10 h-10 flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-all duration-300 ease-in-out cursor-pointer">
                 <Pen strokeWidth={3} className="w-5 h-5" />
             </button>
 
@@ -61,7 +65,7 @@ export function UpdateCategory({ categoryId, onEditComplete }: EditCategoryProps
                         />
                         {/* Sets category it got from the input field */}
                         <div className="flex mt-3 space-x-5 justify-end">
-                            <button className="w-20 h-10 font-bold bg-teal-500 hover:bg-teal-600 rounded-lg text-white"
+                            <button className="w-20 h-10 font-bold bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white"
                                 onClick={handleSubmit}>
                                 Save
                             </button>
