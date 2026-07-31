@@ -11,6 +11,7 @@ import { DeleteTransaction } from "./DeleteTransaction";
 import { SearchTransaction } from "./SearchTransaction";
 import { Pagination } from "./Pagination";
 import SortDate from "./SortDate";
+import ResetView from "./ResetView";
 
 export function TransactionsView() {
     const [data, setData] = useState<Transaction[]>([]);
@@ -48,6 +49,7 @@ export function TransactionsView() {
                         <div className="mt-2 inline-flex gap-2">
                             <span><SortDate onDateSearch={setData}/></span>
                             <span><Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage}/></span>
+                            <span><ResetView onReset={loadTransactions}/></span>
                             <span><AddTransaction onTransactionAdded={loadTransactions}/></span>
                             
                         </div>
