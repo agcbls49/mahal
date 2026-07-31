@@ -66,6 +66,27 @@ async function main() {
         }
     });
 
+    // GET transactions on specific date
+    app.get("/transactions/date/:date", async(req: Request, res: Response) => {
+        const selectedDate = req.params.date as string;
+
+        // parse the event date and ensure its the proper Postgres data format which is yyyy:mm:dd
+        const parsedEventDate = new Date(selectedDate);
+        if (Number.isNaN(parsedEventDate.getTime())) {
+            return res.status(400).json({ message: "Invalid date format" });
+        }
+
+        try {
+            const getTransactionOnDate = await db.select().from(transactions).where(eq(transactions.eventDate, parsedEventDate));
+
+            return res.status(200).json(getTransactionOnDate);
+        }
+        catch(e:any) {
+            console.error(e);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
     // GET transactions by description or category
     // for search feature
     app.get("/transactions/search/:search", async (req: Request, res: Response) => {

@@ -9,9 +9,22 @@ import { AddTransaction } from "./AddTransaction";
 import { UpdateTransaction } from "./UpdateTransaction";
 import { DeleteTransaction } from "./DeleteTransaction";
 import { SearchTransaction } from "./SearchTransaction";
+import { Pagination } from "./Pagination";
+import SortDate from "./SortDate";
 
 export function TransactionsView() {
     const [data, setData] = useState<Transaction[]>([]);
+
+    // Pagination feature
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    const paginatedData = data.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const totalPages = Math.ceil(data.length / itemsPerPage);
 
     async function loadTransactions() {
         const response = await fetch("http://localhost:4000/transactions");
@@ -28,14 +41,20 @@ export function TransactionsView() {
             {/* Added min-h-screen items-center justify-center p-4 to center both boxes */}
             <div className="flex min-h-screen items-center justify-center flex-col md:flex-row gap-10 p-4">
                     {/* Menu Box */}
-                    <div className="w-full max-w-3xl flex flex-col gap-4"> 
+                    <div className="w-full max-w-3xl flex flex-col gap-4 "> 
                         <MenuCard>
                         <SearchTransaction onSearchTransaction={setData} onClearSearch={loadTransactions}/>
                         {/* Show the new transaction created */}
-                        <AddTransaction onTransactionAdded={loadTransactions}/>
+                        <div className="mt-2 inline-flex gap-2">
+                            <span><SortDate onDateSearch={setData}/></span>
+                            <span><Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage}/></span>
+                            <span><AddTransaction onTransactionAdded={loadTransactions}/></span>
+                            
+                        </div>
+                        
                     </MenuCard>
                     {/* Transactions Box */}
-                    <div className="w-full max-h-[80vh] overflow-y-auto bg-black rounded-2xl p-5 text-white">
+                    <div className="w-full h-[37vh] overflow-y-auto bg-black rounded-2xl p-5 text-white">
                         {/* Column Headers */}
                         <div className="grid grid-cols-[120px_1fr_120px_120px_100px] gap-4 font-bold pb-2 mb-3 text-lg tracking-wider border-b border-indigo-500">
                             <span>Amount</span>
@@ -46,7 +65,7 @@ export function TransactionsView() {
                         </div>
                         {/* Transactions View */}
                         <ul className="space-y-2">
-                            {data.map((transaction: Transaction) => (
+                            {paginatedData.map((transaction: Transaction) => (
                                 <li key={transaction.id}
                                     className="grid grid-cols-5 gap-4 items-center justify-between text-lg">
                                     <span>₱{transaction.amount.toLocaleString("en-PH")}</span>

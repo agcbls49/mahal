@@ -41,9 +41,9 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
             {/* Add category button */}
             <button
                 onClick={() => setOpen(true)}
-                className="mt-5 w-full flex items-center justify-center gap-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 rounded-lg transition-colors">
+                className="mt-5 w-full flex items-center justify-center gap-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 rounded-lg transition-colors">
                 <Plus strokeWidth={3} className="w-5 h-5" />
-                <span>Add a Category</span>
+                <span>Category</span>
             </button>
 
             {/* If button is clicked */}
