@@ -7,9 +7,10 @@ import { Category } from "../types/categories";
 type EditCategoryProps = {
     category: Category;
     onEditComplete: () => void;
+    isDarkMode: boolean;
 }
 
-export function UpdateCategory({ category, onEditComplete }: EditCategoryProps) {
+export function UpdateCategory({ category, onEditComplete, isDarkMode }: EditCategoryProps) {
     // edit category button 
     const [open, setOpen] = useState(false);
     // edit category input
@@ -53,7 +54,7 @@ export function UpdateCategory({ category, onEditComplete }: EditCategoryProps) 
             {/* If button is clicked */}
             {open && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-xs">
-                    <div className="bg-black rounded-xl p-6 w-96">
+                    <div className={`rounded-xl p-6 w-96 ${isDarkMode ? 'bg-darkpurple text-white' : 'bg-cream text-black'}`}>
                         <h2 className="text-xl font-bold mb-4">Edit Category</h2>
                         {/* Input field gets the value */}
                         <input

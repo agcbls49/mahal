@@ -5,13 +5,19 @@ import { Plus } from "lucide-react";
 
 interface AddCategoryProps {
     onCategoryAdded: () => void;
+    isDarkMode: boolean;
 }
 
-export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
+export function AddCategory({ onCategoryAdded, isDarkMode }: AddCategoryProps) {
     // create category button 
     const [open, setOpen] = useState(false);
     // create category input
     const [categoryName, setCategoryName] = useState("");
+
+    // clear all entries when close or save button is clicked
+    function resetForm() {
+        setCategoryName("");
+    }
 
     // function to call api and create the category
     async function handleSubmit() {
@@ -30,7 +36,7 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
         });
 
         if (response.ok) {
-            setCategoryName("");
+            resetForm();
             setOpen(false);
             onCategoryAdded();
         }
@@ -49,7 +55,7 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
             {/* If button is clicked */}
             {open && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-xs">
-                    <div className="bg-black rounded-xl p-6 w-96">
+                    <div className={`rounded-xl p-6 w-96 ${isDarkMode ? 'bg-darkpurple text-white' : 'bg-cream text-black'}`}>
                         <h2 className="text-xl font-bold mb-4">Add Category</h2>
                         {/* Input field gets the value */}
                         <input
@@ -67,7 +73,10 @@ export function AddCategory({ onCategoryAdded }: AddCategoryProps) {
                             </button>
 
                             <button className="w-20 h-10 font-bold bg-red-500 hover:bg-red-600 rounded-lg text-white"
-                                onClick={() => setOpen(false)}>
+                                onClick={() => {
+                                    resetForm();
+                                    setOpen(false);
+                                }}>
                                 Close
                             </button>
                         </div>

@@ -10,9 +10,10 @@ import "../../datepicker.css";
 
 type SortDateProps = {
     onDateSearch: (results: Transaction[]) => void;
+    isDarkMode: boolean;
 }
 
-export default function SortDate({ onDateSearch }: SortDateProps) {
+export default function SortDate({ onDateSearch, isDarkMode }: SortDateProps) {
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
     const handleChange = (date: Date | null) => {
@@ -35,11 +36,11 @@ export default function SortDate({ onDateSearch }: SortDateProps) {
     return( 
         <div>
             <DatePicker 
-                className="mt-4 border border-indigo-500 rounded-md outline-none text-center text-lg max-w-40 bg-black text-white"
+                className={`mt-4 border border-indigo-500 rounded-md outline-none text-center text-lg max-w-40 ${isDarkMode ? 'bg-darkpurple text-white transition-colors duration-300' : 'bg-cream text-black transition-colors duration-300'}`}
                 popperClassName="!important selection:bg-indigo-500"
                 selected={selectedDate} 
                 onChange={handleChange} 
-                icon={<Calendar className="mt-4"/>}
+                icon={<Calendar strokeWidth={2} className={`mt-4.5 ${isDarkMode ? 'text-white' : 'text-black'}`}/>}
                 showIcon
                 toggleCalendarOnIconClick
                 closeOnScroll

@@ -8,9 +8,10 @@ import { Transaction } from "../types/transaction";
 type EditTransactionProps = {
     transaction: Transaction;
     onEditComplete: () => void;
+    isDarkMode: boolean;
 }
 
-export function UpdateTransaction({ transaction, onEditComplete}: EditTransactionProps) {
+export function UpdateTransaction({ transaction, onEditComplete, isDarkMode }: EditTransactionProps) {
     // edit transaction button 
     const [open, setOpen] = useState(false);
     // edit transaction input
@@ -86,7 +87,7 @@ export function UpdateTransaction({ transaction, onEditComplete}: EditTransactio
             {/* If button is clicked */}
             {open && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-xs">
-                    <div className="bg-black rounded-xl p-6 w-96">
+                    <div className={`rounded-xl p-6 w-96 ${isDarkMode ? 'bg-darkpurple text-white' : 'bg-cream text-black'}`}>
                         <h2 className="text-xl font-bold mb-4">Edit Transaction</h2>
                         {/* Input field gets the value */}
                         <input
@@ -112,8 +113,7 @@ export function UpdateTransaction({ transaction, onEditComplete}: EditTransactio
                         <select
                             value={transactionCategoryName}
                             onChange={(e) => setTransactionCategoryName(e.target.value)}
-                            className="w-full border-b rounded p-2 mb-4 focus:outline-none bg-black text-white"
-                            >
+                            className={`w-full border-b rounded p-2 mb-4 focus:outline-none ${isDarkMode ? 'bg-darkpurple text-white' : 'bg-cream text-black'}`}>
                             <option value="">Select Category</option>
 
                             {categories.map((category) => (

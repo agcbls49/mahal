@@ -1,5 +1,5 @@
 .react-datepicker {
-    background: #000;
+    background: #1e1b4b;
     border: 1px solid #6366f1;
     color: white;
 }
@@ -19,7 +19,7 @@
 }
 
 .react-datepicker__day:hover {
-    background: #1e1b4b !important;
+    background: rgb(67, 59, 167) !important;
 }
 
 .react-datepicker__day--selected {

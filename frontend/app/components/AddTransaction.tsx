@@ -6,9 +6,10 @@ import { Plus } from "lucide-react";
 
 interface AddTransactionProps {
     onTransactionAdded: () => void;
+    isDarkMode: boolean;
 }
 
-export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
+export function AddTransaction({ onTransactionAdded, isDarkMode }: AddTransactionProps) {
     // create transaction button 
     const [open, setOpen] = useState(false);
     // create transaction input
@@ -18,6 +19,14 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
     const [transactionCategoryName, setTransactionCategoryName] = useState("");
     // get categories already created
     const [categories, setCategories] = useState<Category[]>([]);
+
+    // clear all entries when close or save button is clicked
+    function resetForm() {
+        setTransactionAmount("");
+        setTransactionDescription("");
+        setTransactionEventDate("");
+        setTransactionCategoryName("");
+    }
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setTransactionEventDate(event.target.value); // Returns "YYYY-MM-DD"
@@ -53,10 +62,7 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
         });
 
         if (response.ok) {
-            setTransactionAmount("");
-            setTransactionDescription("");
-            setTransactionEventDate("");
-            setTransactionCategoryName("");
+            resetForm();
             setOpen(false);
             onTransactionAdded();
         }
@@ -78,7 +84,7 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
             {/* If button is clicked */}
             {open && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-xs">
-                    <div className="bg-black rounded-xl p-6 w-96">
+                    <div className={`rounded-xl p-6 w-96 ${isDarkMode ? 'bg-darkpurple text-white' : 'bg-cream text-black'}`}>
                         <h2 className="text-xl font-bold mb-4">Add Transaction</h2>
                         {/* Input field gets the value */}
                         <input
@@ -104,8 +110,7 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
                         <select
                             value={transactionCategoryName}
                             onChange={(e) => setTransactionCategoryName(e.target.value)}
-                            className="w-full border-b rounded p-2 mb-4 focus:outline-none bg-black text-white"
-                            >
+                            className={`w-full border-b rounded p-2 mb-4 focus:outline-none ${isDarkMode ? 'bg-darkpurple text-white' : 'bg-cream text-black'}`}>
                             <option value="">Select Category</option>
 
                             {categories.map((category) => (
@@ -122,7 +127,10 @@ export function AddTransaction({ onTransactionAdded }: AddTransactionProps) {
                             </button>
 
                             <button className="w-20 h-10 font-bold bg-red-500 hover:bg-red-600 rounded-lg text-white"
-                                onClick={() => setOpen(false)}>
+                                onClick={() => { 
+                                    resetForm();
+                                    setOpen(false);
+                                }}>
                                 Close
                             </button>
                         </div>
