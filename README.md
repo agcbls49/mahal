@@ -10,7 +10,10 @@ Simple Expense Tracker
 **Backend:**
 1. Express.js
 2. Drizzle ORM
-3. PostgeSQL
+3. PostgreSQL
+
+**Tool:**
+Docker
 
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE
