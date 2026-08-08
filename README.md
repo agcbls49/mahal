@@ -16,6 +16,9 @@ Simple Expense Tracker
 <br>
 Docker
 
+## Screenshots
+
+
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE
 2. Node.js*
