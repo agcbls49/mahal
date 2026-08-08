@@ -23,14 +23,20 @@ export default function SortDate({ onDateSearch, isDarkMode }: SortDateProps) {
         }
     };
 
-    async function loadTransactionsOnDate(date: Date) {
-        // format as YYYY-MM-DD to match backend
-        const formattedDate = date.toISOString().split("T")[0];
+    // format local date instead of using the UTC method 
+    // this is timezone safe unlike the toIsoString() method
+    function formatLocalDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
 
+    async function loadTransactionsOnDate(date: Date) {
+        const formattedDate = formatLocalDate(date);
         const response = await fetch(`http://localhost:4000/transactions/date/${formattedDate}`);
         const result = await response.json();
-        // don't overwrite selectedDate
-        onDateSearch(result); 
+        onDateSearch(result);
     }
 
     return( 

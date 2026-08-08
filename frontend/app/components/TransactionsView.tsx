@@ -45,6 +45,7 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
         }
         catch (e:any) {
             console.error(e);
+            // without this it would say data.splice error for code on line 30 of this file
             setData([]);
         }
     }
@@ -53,10 +54,17 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
         loadTransactions();
     }, []);
 
+    // this is to reset th view by sending the user back to page 1 and reloading all transactions
     function handleResetView() {
         setCurrentPage(1);
         loadTransactions();
     };
+
+    // search transactions on specific date feature
+    function handleDateSearch(results: Transaction[]) {
+        setCurrentPage(1);
+        setData(results);
+    }
 
     return (
         <>
@@ -69,7 +77,7 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
                         {/* Show the new transaction created */}
                         <div className="mt-2 inline-flex gap-2">
                             <span><DarkModeButton onClick={toggleDarkMode} isDarkMode={isDarkMode}/></span>
-                            <span><SortDate onDateSearch={setData} isDarkMode={isDarkMode}/></span>
+                            <span><SortDate onDateSearch={handleDateSearch} isDarkMode={isDarkMode}/></span>
                             <span><Pagination 
                                 currentPage={currentPage} 
                                 totalPages={totalPages} 
