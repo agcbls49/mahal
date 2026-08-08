@@ -43,6 +43,11 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
         loadTransactions();
     }, []);
 
+    function handleResetView() {
+        setCurrentPage(1);
+        loadTransactions();
+    };
+
     return (
         <>
             {/* Added min-h-screen items-center justify-center p-4 to center both boxes */}
@@ -61,7 +66,7 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
                                 onPageChange={setCurrentPage} 
                                 isDarkMode={isDarkMode}/>
                             </span>
-                            <span><ResetView onReset={loadTransactions}/></span>
+                            <span><ResetView onReset={handleResetView}/></span>
                             <span><AddTransaction onTransactionAdded={loadTransactions} isDarkMode={isDarkMode}/></span>
                         </div>
                     </MenuCard>
