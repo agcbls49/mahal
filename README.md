@@ -13,6 +13,7 @@ Simple Expense Tracker
 3. PostgreSQL
 
 **Tool:**
+<br>
 Docker
 
 ## Requirements to Install

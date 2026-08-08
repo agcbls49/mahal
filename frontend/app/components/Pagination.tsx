@@ -19,7 +19,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, isDarkMode }
                 <ArrowLeft/>
             </button>
 
-            <span className={isDarkMode ? 'text-white' : 'text-black'}>
+            <span className={`text-base text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
                 Page {currentPage} of {totalPages}
             </span>
 
