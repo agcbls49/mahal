@@ -1,17 +1,28 @@
+// Database Setup
+import dotenv from 'dotenv';
+
+// Load environment variables for database
+dotenv.config({path: "./.env"});
+
 // import database config and user table from schema folder
 import { db } from "./db";
 import { categories, transactions } from "./drizzle/schema";
 import { eq, asc, ilike, or } from "drizzle-orm";
 
 // import express data types and cors
-import express, { Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 
 async function main() {
-    const app = express();
+    const app:Application = express();
+
+    // port 4000 for Express or env port 
+    const PORT: number = parseInt(process.env.PORT || '4000', 10);
 
     // cors setup for Next.js
     app.use(cors({ origin: "http://localhost:3000" }));
+
+    // Built-in Express middleware to parse incoming JSON request bodies
     app.use(express.json());
 
     // GET ALL CATEGORIES
@@ -248,10 +259,9 @@ async function main() {
         }
     });
 
-
-    const port = process.env.PORT || 4000;
-    app.listen(port, () => {
-        console.log(`Server running on http://localhost:${port}/transactions`);
+    // Run this development server in port 4000. added 0.0.0.0 for docker
+    app.listen(PORT, "0.0.0.0", (): void => {
+        console.log(`Server running on http://localhost:${PORT}/transactions`);
     });
 }
 

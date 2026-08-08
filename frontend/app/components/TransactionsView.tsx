@@ -10,6 +10,7 @@ import { UpdateTransaction } from "./UpdateTransaction";
 import { DeleteTransaction } from "./DeleteTransaction";
 import { SearchTransaction } from "./SearchTransaction";
 import { Pagination } from "./Pagination";
+
 import SortDate from "./SortDate";
 import ResetView from "./ResetViewButton";
 import DarkModeButton from "./DarkModeButton";
@@ -34,9 +35,18 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     async function loadTransactions() {
-        const response = await fetch("http://localhost:4000/transactions");
-        const result = await response.json();
-        setData(result);
+        try {
+            const response = await fetch("http://localhost:4000/transactions");
+            if (!response.ok) {
+                throw new Error("Failed to fetch transactions");
+            }
+            const result = await response.json();
+            setData(result);
+        }
+        catch (e:any) {
+            console.error(e);
+            setData([]);
+        }
     }
 
     useEffect(() => {
