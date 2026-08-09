@@ -71,7 +71,7 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
             {/* Added min-h-screen items-center justify-center p-4 to center both boxes */}
             <div className="flex min-h-screen items-center justify-center flex-col md:flex-row gap-10 p-4">
                     {/* Menu Box */}
-                    <div className="w-full max-w-3xl flex flex-col gap-4 "> 
+                    <div className="w-full max-w-3xl flex flex-col gap-4"> 
                         <MenuCard isDarkMode={isDarkMode}>
                         <SearchTransaction onSearchTransaction={setData} onClearSearch={loadTransactions}/>
                         {/* Show the new transaction created */}
@@ -89,7 +89,7 @@ export function TransactionsView({ isDarkMode, toggleDarkMode }: DarkModeProps) 
                         </div>
                     </MenuCard>
                     {/* Transactions Box */}
-                    <div className={`w-full h-[37vh] rounded-2xl p-5 ${isDarkMode ? 'bg-darkpurple text-white transition-colors duration-300' : 'bg-cream text-black transition-colors duration-300'}`}>
+                    <div className={`w-full h-[37vh] rounded-2xl p-5 shadow-2xl ${isDarkMode ? 'bg-darkpurple text-white transition-colors duration-300' : 'bg-cream text-black transition-colors duration-300'}`}>
                         <div className="h-full overflow-y-auto pr-2">
                             {/* Column Headers */}
                             <div className="grid grid-cols-[120px_1fr_120px_120px_100px] gap-4 font-bold pb-2 mb-3 text-lg tracking-wider border-b border-indigo-500">

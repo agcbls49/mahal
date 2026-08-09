@@ -1,5 +1,32 @@
 # Mahal
-Simple Expense Tracker
+Mahal is a simple expense tracker that lets you create, edit, delete, filter, and search transactions and categories, view them in a paginated table sorted by date automatically, and switch between Dark Mode and Light Mode. The word **"mahal"** in Filipino means expensive.
+
+## Features
+**Transactions are sorted by date automatically**
+<br>
+1. Create a transaction (with amount, description, date, and category)
+2. Create a category
+3. Edit a transaction
+4. Edit a category
+5. Filter transactions by a specific date
+6. Search transactions by description
+7. Search transactions by category
+8. Set theme to Dark Mode / Light Mode
+9. Pagination
+10. Reset view (clear search/filter and return to page 1)
+11. Delete a transaction
+12. Delete a category
+
+## Screenshots
+
+### Create a Transaction/Category
+
+### Edit a Transaction/Category
+
+### Filter Transactions by a Specific Date
+
+### Search Transactions by Description/Category
+
 
 ## Tech Stack
 **Frontend:**
@@ -15,9 +42,6 @@ Simple Expense Tracker
 **Tool:**
 <br>
 Docker
-
-## Screenshots
-
 
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE

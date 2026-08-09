@@ -25,7 +25,7 @@ export function CategoriesView({ isDarkMode }: CategoriesViewProps) {
 
 return (
     <div
-        className={`w-full max-w-70 h-125 rounded-2xl p-5 flex flex-col ${
+        className={`w-full max-w-70 h-125 rounded-2xl p-5 flex flex-col shadow-2xl ${
             isDarkMode
                 ? "bg-darkpurple text-white transition-colors duration-300"
                 : "bg-cream text-black transition-colors duration-300"
